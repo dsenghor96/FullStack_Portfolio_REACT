@@ -37,6 +37,9 @@ function DetaillerProjet() {
     })
       .then(response => response.json())
       .then(data => {
+        // On met à jour l'état local avec les nouvelles données
+        setProjet({ ...data, libelle, image, description, technologie, lien })
+        // On quitte le mode édition
         setModeEdition(false)
       })
   }
