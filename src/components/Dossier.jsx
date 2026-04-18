@@ -35,5 +35,40 @@ function Dossier() {
       })
   }
 
+  return (
+    <div className="dossier">
 
+      {/* Bouton qui affiche ou cache le formulaire d'ajout selon l'état afficherFormulaire */}
+      <button
+        className="btn-ajouter"
+        onClick={() => setAfficherFormulaire(!afficherFormulaire)}
+      >
+        {/* Affichage conditionnel du texte du bouton */}
+        {afficherFormulaire ? 'Annuler' : 'Ajouter un projet'}
+      </button>
+
+      {/* Affichage conditionnel : on affiche AjouterProjet seulement si afficherFormulaire est true */}
+      {afficherFormulaire && (
+        <AjouterProjet onAjouter={ajouterProjet} />
+      )}
+
+      {/* Affichage conditionnel : message si la liste est vide */}
+      {projets.length === 0 ? (
+        <p className="liste-vide">Aucun projet pour le moment. Ajoutez-en un !</p>
+      ) : (
+        // Affichage de la liste des projets
+        <div className="liste-projets">
+          {/* On parcourt la liste et on crée un composant Projet pour chaque élément */}
+          {projets.map(projet => (
+            <Projet
+              key={projet.id}
+              projet={projet}
+              onSupprimer={supprimerProjet}
+            />
+          ))}
+        </div>
+      )}
+
+    </div>
+  )
 }
