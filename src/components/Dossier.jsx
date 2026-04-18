@@ -25,5 +25,15 @@ function Dossier() {
       })
   }
 
+  function supprimerProjet(id) {
+    fetch(`http://localhost:3001/projets/${id}`, {
+      method: 'DELETE'
+    })
+      .then(() => {
+        // On filtre la liste pour retirer le projet supprimé
+        setProjets(projets.filter(projet => projet.id !== id))
+      })
+  }
+
 
 }
