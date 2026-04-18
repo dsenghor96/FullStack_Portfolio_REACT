@@ -12,4 +12,18 @@ function Dossier() {
       .then(data => setProjets(data))
   }, [])
 
+    function ajouterProjet(nouveauProjet) {
+    fetch('http://localhost:3001/projets', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(nouveauProjet)
+    })
+      .then(response => response.json())
+      .then(projetCree => {
+        setProjets([...projets, projetCree])
+        setAfficherFormulaire(false)
+      })
+  }
+
+
 }
