@@ -1,3 +1,13 @@
 {
-  "projets": []
+  "projets": [
+    {
+      "libelle": "deploiement d'un site web statique avec S3",
+      "image": "https://i.ytimg.com/vi/ecv-19sYL3w/maxresdefault.jpg",
+      "description": "deploiement d'une vitrine ecommerce dans le bucket s3",
+      "technologie": "AWS, React",
+      "lien": "",
+      "id": "CqgCCVT-Seo"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

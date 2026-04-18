@@ -1,184 +1,212 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
-
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+/* Style général de l'application */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
+body {
+  font-family: Arial, sans-serif;
+  background-color: #F8F4EF;
+  color: #1A1A1A;
 }
 
-#center {
+/* Conteneur principal */
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Titre principal */
+.titre-app {
+  text-align: center;
+  color: #7B1E3A;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #D4AF37;
+  padding-bottom: 10px;
+}
+
+/* Conteneur du dossier */
+.dossier {
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
+  gap: 20px;
 }
 
-#next-steps {
+/* Liste des projets */
+.liste-projets {
   display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
+/* Message liste vide */
+.liste-vide {
+  text-align: center;
+  color: #5A142A;
+  font-style: italic;
 }
 
-#next-steps ul {
-  list-style: none;
-  padding: 0;
+/* Carte projet */
+.projet-card {
+  background-color: #EDE6DD;
+  border: 1px solid #D4AF37;
+  border-radius: 8px;
+  padding: 15px;
+  width: 250px;
   display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
+  flex-direction: column;
+  gap: 10px;
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
-}
-
-.ticks {
-  position: relative;
+/* Image du projet */
+.projet-image {
   width: 100%;
+  border-radius: 5px;
+}
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
+/* Libellé lien du projet */
+.projet-libelle {
+  color: #7B1E3A;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 16px;
+}
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
-  }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
-  }
+.projet-libelle:hover {
+  text-decoration: underline;
+  color: #5A142A;
+}
+
+/* Boutons */
+.btn-ajouter {
+  background-color: #7B1E3A;
+  color: #F8F4EF;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  align-self: flex-start;
+}
+
+.btn-ajouter:hover {
+  background-color: #5A142A;
+}
+
+.btn-supprimer {
+  background-color: #D4AF37;
+  color: #1A1A1A;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-supprimer:hover {
+  background-color: #b8962e;
+}
+
+.btn-valider {
+  background-color: #7B1E3A;
+  color: #F8F4EF;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-valider:hover {
+  background-color: #5A142A;
+}
+
+.btn-annuler {
+  background-color: #EDE6DD;
+  color: #1A1A1A;
+  border: 1px solid #7B1E3A;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-annuler:hover {
+  background-color: #d5cdc4;
+}
+
+.btn-editer {
+  background-color: #D4AF37;
+  color: #1A1A1A;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-editer:hover {
+  background-color: #b8962e;
+}
+
+/* Formulaire d'ajout et d'édition */
+.formulaire-ajout {
+  background-color: #EDE6DD;
+  border: 1px solid #D4AF37;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formulaire-ajout h2 {
+  color: #7B1E3A;
+}
+
+/* Champ du formulaire */
+.champ {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.champ label {
+  font-weight: bold;
+  color: #5A142A;
+}
+
+.champ input,
+.champ textarea {
+  padding: 8px;
+  border: 1px solid #D4AF37;
+  border-radius: 5px;
+  background-color: #F8F4EF;
+  color: #1A1A1A;
+  font-size: 14px;
+}
+
+.champ textarea {
+  height: 80px;
+  resize: vertical;
+}
+
+/* Page de détail */
+.detail-projet {
+  background-color: #EDE6DD;
+  border: 1px solid #D4AF37;
+  border-radius: 8px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.detail-projet h2 {
+  color: #7B1E3A;
+}
+
+/* Boutons de la page détail */
+.boutons-detail {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
 }

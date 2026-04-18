@@ -72,3 +72,4 @@ function Dossier() {
     </div>
   )
 }
+export default Dossier
