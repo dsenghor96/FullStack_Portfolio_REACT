@@ -90,3 +90,4 @@ function AjouterProjet({ onAjouter }) {
     </form>
   )
 }
+export default AjouterProjet
