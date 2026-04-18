@@ -24,4 +24,23 @@ function DetaillerProjet() {
         setLien(data.lien)
       })
   }, [id])
+
+  function handleEditer(e) {
+    e.preventDefault()
+
+    const projetModifie = { libelle, image, description, technologie, lien }
+
+    fetch(`http://localhost:3001/projets/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(projetModifie)
+    })
+      .then(response => response.json())
+      .then(data => {
+        // On met à jour l'état local avec les nouvelles données
+        setProjet(data)
+        // On quitte le mode édition
+        setModeEdition(false)
+      })
+  }
 }
