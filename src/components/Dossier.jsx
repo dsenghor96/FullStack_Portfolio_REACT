@@ -2,17 +2,17 @@ import { useState, useEffect } from 'react'
 import Projet from './Projet'
 import AjouterProjet from './AjouterProjet'
 
-function Dossier() { 
-    const [projets, setProjets] = useState([])
-    const [afficherFormulaire, setAfficherFormulaire] = useState(false)
+// Dossier reçoit l'état du formulaire depuis App
+function Dossier({ afficherFormulaire, setAfficherFormulaire }) {
+  const [projets, setProjets] = useState([])
 
-    useEffect(() => {
+  useEffect(() => {
     fetch('http://localhost:3001/projets')
       .then(response => response.json())
       .then(data => setProjets(data))
   }, [])
 
-    function ajouterProjet(nouveauProjet) {
+  function ajouterProjet(nouveauProjet) {
     fetch('http://localhost:3001/projets', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -30,7 +30,6 @@ function Dossier() {
       method: 'DELETE'
     })
       .then(() => {
-        // On filtre la liste pour retirer le projet supprimé
         setProjets(projets.filter(projet => projet.id !== id))
       })
   }
@@ -38,27 +37,19 @@ function Dossier() {
   return (
     <div className="dossier">
 
-      {/* Bouton qui affiche ou cache le formulaire d'ajout selon l'état afficherFormulaire */}
-      <button
-        className="btn-ajouter"
-        onClick={() => setAfficherFormulaire(!afficherFormulaire)}
-      >
-        {/* Affichage conditionnel du texte du bouton */}
-        {afficherFormulaire ? 'Annuler' : 'Ajouter un projet'}
-      </button>
-
-      {/* Affichage conditionnel : on affiche AjouterProjet seulement si afficherFormulaire est true */}
+      {/* Affichage conditionnel du formulaire */}
       {afficherFormulaire && (
         <AjouterProjet onAjouter={ajouterProjet} />
       )}
 
-      {/* Affichage conditionnel : message si la liste est vide */}
+      {/* Affichage conditionnel : liste vide ou liste de projets */}
       {projets.length === 0 ? (
-        <p className="liste-vide">Aucun projet pour le moment. Ajoutez-en un !</p>
+        <div className="liste-vide-container">
+          <p className="liste-vide">Aucun projet pour le moment.</p>
+          <p className="liste-vide-hint">Cliquez sur "+ Ajouter un projet" pour commencer.</p>
+        </div>
       ) : (
-        // Affichage de la liste des projets
         <div className="liste-projets">
-          {/* On parcourt la liste et on crée un composant Projet pour chaque élément */}
           {projets.map(projet => (
             <Projet
               key={projet.id}
@@ -72,4 +63,5 @@ function Dossier() {
     </div>
   )
 }
+
 export default Dossier
