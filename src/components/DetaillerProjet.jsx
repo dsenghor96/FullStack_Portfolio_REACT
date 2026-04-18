@@ -142,3 +142,4 @@ function DetaillerProjet() {
     </div>
   )
 }
+export default DetaillerProjet
