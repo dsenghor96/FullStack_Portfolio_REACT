@@ -1,25 +1,30 @@
 import { useState } from 'react'
 
 function AjouterProjet({ onAjouter }) {
-    const [libelle, setLibelle] = useState('')
-    const [image, setImage] = useState('')
-    const [description, setDescription] = useState('')
-    const [technologie, setTechnologie] = useState('')
-    const [lien, setLien] = useState('')
+  const [titre, setTitre] = useState('')
+  const [image, setImage] = useState(null)
+  const [description, setDescription] = useState('')
+  const [technologies, setTechnologies] = useState('')
+  const [lien, setLien] = useState('')
 
-    function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault()
 
-    if (!libelle) return
+    if (!titre) return
 
-    const nouveauProjet = { libelle, image, description, technologie, lien }
+    const formData = new FormData()
+    formData.append('titre', titre)
+    formData.append('description', description)
+    formData.append('technologies', technologies)
+    formData.append('lien', lien)
+    if (image) formData.append('image', image)
 
-    onAjouter(nouveauProjet)
+    onAjouter(formData)
 
-    setLibelle('')
-    setImage('')
+    setTitre('')
+    setImage(null)
     setDescription('')
-    setTechnologie('')
+    setTechnologies('')
     setLien('')
   }
 
@@ -27,30 +32,25 @@ function AjouterProjet({ onAjouter }) {
     <form className="formulaire-ajout" onSubmit={handleSubmit}>
       <h2>Ajouter un projet</h2>
 
-      {/* Champ libellé */}
       <div className="champ">
-        <label>Libellé *</label>
+        <label>Titre *</label>
         <input
           type="text"
-          value={libelle}
-          // onChange met à jour l'état local à chaque frappe
-          onChange={(e) => setLibelle(e.target.value)}
+          value={titre}
+          onChange={(e) => setTitre(e.target.value)}
           placeholder="Nom du projet"
         />
       </div>
 
-      {/* Champ image */}
       <div className="champ">
-        <label>URL de l'image</label>
+        <label>Image</label>
         <input
-          type="text"
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
-          placeholder="https://..."
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImage(e.target.files[0])}
         />
       </div>
 
-      {/* Champ description */}
       <div className="champ">
         <label>Description</label>
         <textarea
@@ -60,18 +60,16 @@ function AjouterProjet({ onAjouter }) {
         />
       </div>
 
-      {/* Champ technologie */}
       <div className="champ">
         <label>Technologies</label>
         <input
           type="text"
-          value={technologie}
-          onChange={(e) => setTechnologie(e.target.value)}
-          placeholder="React, AWS, ..."
+          value={technologies}
+          onChange={(e) => setTechnologies(e.target.value)}
+          placeholder="React, AWS, Docker, ..."
         />
       </div>
 
-      {/* Champ lien */}
       <div className="champ">
         <label>Lien GitHub</label>
         <input
@@ -82,7 +80,6 @@ function AjouterProjet({ onAjouter }) {
         />
       </div>
 
-      {/* Bouton de soumission du formulaire */}
       <button type="submit" className="btn-valider">
         Valider
       </button>
@@ -90,4 +87,5 @@ function AjouterProjet({ onAjouter }) {
     </form>
   )
 }
+
 export default AjouterProjet

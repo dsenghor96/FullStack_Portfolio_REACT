@@ -1,21 +1,26 @@
 import { Link } from 'react-router-dom'
 
+const API_URL = 'http://localhost:3000'
+
 function Projet({ projet, onSupprimer }) {
   return (
     <div className="projet-card">
 
-      {/* On affiche l'image du projet */}
-      <img src={projet.image} alt={projet.libelle} className="projet-image" />
+      {projet.image && (
+        <img
+          src={`${API_URL}/uploads/${projet.image}`}
+          alt={projet.titre}
+          className="projet-image"
+        />
+      )}
 
-      {/* Le libellé est un lien qui navigue vers la page de détail du projet */}
-      <Link to={`/projet/${projet.id}`} className="projet-libelle">
-        {projet.libelle}
+      <Link to={`/projet/${projet._id}`} className="projet-libelle">
+        {projet.titre}
       </Link>
 
-      {/* Bouton supprimer qui appelle la fonction onSupprimer avec l'id du projet */}
       <button
         className="btn-supprimer"
-        onClick={() => onSupprimer(projet.id)}
+        onClick={() => onSupprimer(projet._id)}
       >
         Supprimer
       </button>

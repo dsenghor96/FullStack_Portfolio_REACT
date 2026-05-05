@@ -1,26 +1,28 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 
+const API_URL = 'http://localhost:3000/api/projects'
+const BASE_URL = 'http://localhost:3000'
+
 function DetaillerProjet() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [projet, setProjet] = useState(null)
   const [modeEdition, setModeEdition] = useState(false)
-  const [libelle, setLibelle] = useState('')
-  const [image, setImage] = useState('')
+  const [titre, setTitre] = useState('')
+  const [image, setImage] = useState(null)
   const [description, setDescription] = useState('')
-  const [technologie, setTechnologie] = useState('')
+  const [technologies, setTechnologies] = useState('')
   const [lien, setLien] = useState('')
 
   useEffect(() => {
-    fetch(`http://localhost:3001/projets/${id}`)
+    fetch(`${API_URL}/${id}`)
       .then(response => response.json())
       .then(data => {
         setProjet(data)
-        setLibelle(data.libelle)
-        setImage(data.image)
+        setTitre(data.titre)
         setDescription(data.description)
-        setTechnologie(data.technologie)
+        setTechnologies(data.technologies.join(', '))
         setLien(data.lien)
       })
   }, [id])
@@ -28,18 +30,20 @@ function DetaillerProjet() {
   function handleEditer(e) {
     e.preventDefault()
 
-    const projetModifie = { libelle, image, description, technologie, lien }
+    const formData = new FormData()
+    formData.append('titre', titre)
+    formData.append('description', description)
+    formData.append('technologies', technologies)
+    formData.append('lien', lien)
+    if (image) formData.append('image', image)
 
-    fetch(`http://localhost:3001/projets/${id}`, {
+    fetch(`${API_URL}/${id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(projetModifie)
+      body: formData
     })
       .then(response => response.json())
       .then(data => {
-        // On met à jour l'état local avec les nouvelles données
-        setProjet({ ...data, libelle, image, description, technologie, lien })
-        // On quitte le mode édition
+        setProjet(data)
         setModeEdition(false)
       })
   }
@@ -49,27 +53,26 @@ function DetaillerProjet() {
   return (
     <div className="detail-projet">
 
-      {/* Affichage conditionnel : mode édition ou mode affichage */}
       {modeEdition ? (
 
         <form className="formulaire-ajout" onSubmit={handleEditer}>
           <h2>Editer le projet</h2>
 
           <div className="champ">
-            <label>Libellé</label>
+            <label>Titre</label>
             <input
               type="text"
-              value={libelle}
-              onChange={(e) => setLibelle(e.target.value)}
+              value={titre}
+              onChange={(e) => setTitre(e.target.value)}
             />
           </div>
 
           <div className="champ">
-            <label>URL de l'image</label>
+            <label>Image</label>
             <input
-              type="text"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files[0])}
             />
           </div>
 
@@ -85,8 +88,8 @@ function DetaillerProjet() {
             <label>Technologies</label>
             <input
               type="text"
-              value={technologie}
-              onChange={(e) => setTechnologie(e.target.value)}
+              value={technologies}
+              onChange={(e) => setTechnologies(e.target.value)}
             />
           </div>
 
@@ -101,7 +104,6 @@ function DetaillerProjet() {
 
           <div className="boutons-detail">
             <button type="submit" className="btn-valider">Sauvegarder</button>
-            {/* Annuler l'édition sans sauvegarder */}
             <button
               type="button"
               className="btn-annuler"
@@ -115,22 +117,25 @@ function DetaillerProjet() {
       ) : (
 
         <div>
-          <h2>{projet.libelle}</h2>
-          <img src={projet.image} alt={projet.libelle} className="projet-image" />
+          <h2>{projet.titre}</h2>
+          {projet.image && (
+            <img
+              src={`${BASE_URL}/uploads/${projet.image}`}
+              alt={projet.titre}
+              className="projet-image"
+            />
+          )}
           <p><strong>Description :</strong> {projet.description}</p>
-          <p><strong>Technologies :</strong> {projet.technologie}</p>
+          <p><strong>Technologies :</strong> {projet.technologies.join(', ')}</p>
           <p><strong>Lien :</strong> <a href={projet.lien} target="_blank">{projet.lien}</a></p>
 
           <div className="boutons-detail">
-            {/* Bouton Annuler : retourne à la liste des projets */}
             <button
               className="btn-annuler"
               onClick={() => navigate('/')}
             >
-              Annuler
+              Retour
             </button>
-
-            {/* Bouton Editer : active le mode édition */}
             <button
               className="btn-editer"
               onClick={() => setModeEdition(true)}
@@ -145,4 +150,5 @@ function DetaillerProjet() {
     </div>
   )
 }
+
 export default DetaillerProjet

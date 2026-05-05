@@ -2,21 +2,21 @@ import { useState, useEffect } from 'react'
 import Projet from './Projet'
 import AjouterProjet from './AjouterProjet'
 
-// Dossier reçoit l'état du formulaire depuis App
+const API_URL = 'http://localhost:3000/api/projects'
+
 function Dossier({ afficherFormulaire, setAfficherFormulaire }) {
   const [projets, setProjets] = useState([])
 
   useEffect(() => {
-    fetch('http://localhost:3001/projets')
+    fetch(API_URL)
       .then(response => response.json())
       .then(data => setProjets(data))
   }, [])
 
-  function ajouterProjet(nouveauProjet) {
-    fetch('http://localhost:3001/projets', {
+  function ajouterProjet(formData) {
+    fetch(API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(nouveauProjet)
+      body: formData
     })
       .then(response => response.json())
       .then(projetCree => {
@@ -26,23 +26,20 @@ function Dossier({ afficherFormulaire, setAfficherFormulaire }) {
   }
 
   function supprimerProjet(id) {
-    fetch(`http://localhost:3001/projets/${id}`, {
+    fetch(`${API_URL}/${id}`, {
       method: 'DELETE'
     })
       .then(() => {
-        setProjets(projets.filter(projet => projet.id !== id))
+        setProjets(projets.filter(projet => projet._id !== id))
       })
   }
 
   return (
     <div className="dossier">
-
-      {/* Affichage conditionnel du formulaire */}
       {afficherFormulaire && (
         <AjouterProjet onAjouter={ajouterProjet} />
       )}
 
-      {/* Affichage conditionnel : liste vide ou liste de projets */}
       {projets.length === 0 ? (
         <div className="liste-vide-container">
           <p className="liste-vide">Aucun projet pour le moment.</p>
@@ -52,14 +49,13 @@ function Dossier({ afficherFormulaire, setAfficherFormulaire }) {
         <div className="liste-projets">
           {projets.map(projet => (
             <Projet
-              key={projet.id}
+              key={projet._id}
               projet={projet}
               onSupprimer={supprimerProjet}
             />
           ))}
         </div>
       )}
-
     </div>
   )
 }
